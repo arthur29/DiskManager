@@ -4,7 +4,8 @@
 
 void requisicoes (Disk *d , FileIndex *fi){
   printf ("REQUISICOES\n");
-  create (d , fi , "teste.txt");
+  printf ("Arquivo criado %d\n", create (d , fi , "teste.txt"));
+
   //int filePointer = -1;               //negativo para demonstrar ponteiro inválido
   //open (d , fi , "teste.txt" , &filePointer);
   //char block[1000];

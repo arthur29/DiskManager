@@ -4,6 +4,7 @@
 
 //previous_block_location and next_block_location < 0 quando não tem
 
+#define DISK_SIZE 100
 
 typedef struct Disks {
 
@@ -19,8 +20,8 @@ typedef struct FileHeaders {
   int size;                         //tamanho do arquivo
   int protection;                   //Campo para protecao do arquivo
   char owner[100];                  //Dono do arquivo
-  char creation[9];                 //Data de criação
-  char modification[9];             //Data de modificacao
+  char creation[10];                 //Data de criação
+  char modification[10];             //Data de modificacao
 
 } FileHeader;
 
@@ -33,5 +34,6 @@ typedef struct FileIndex {
 
   char file_name[100];
   int location;
+  struct FileIndex *next;
 
 } FileIndex;
