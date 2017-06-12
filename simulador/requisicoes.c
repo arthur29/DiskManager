@@ -32,8 +32,8 @@ void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
 
 
 
-  int filePointer = -1;                       //negativo para demonstrar ponteiro inválido
-  open (d , fi , "teste.txt" , &filePointer);
+//  int filePointer = -1;                       //negativo para demonstrar ponteiro inválido
+//  open (d , fi , "teste.txt" , &filePointer);
 
 
 
