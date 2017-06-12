@@ -4,7 +4,7 @@
 #include "simulador/simulador.h"
 
 int main (){
-  printf ("MAIN\n");
+  printf ("MAIN\n\n");
   simulador ();
   return 0;
 }

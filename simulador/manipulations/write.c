@@ -6,6 +6,8 @@
 
 void strcut (char *data,int free_space, int data_size);
 
+//-1 usuário inválido
+//-2 arquivo nao encontrado
 int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , char name[] , char data[], int data_size){
   printf ("WRITE\n");
   FileIndex *current = *fi;
@@ -84,7 +86,7 @@ int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , ch
       }
 
     }else{
-      return -1;
+      return -2;
     }
   }
   

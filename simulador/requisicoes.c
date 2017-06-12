@@ -4,14 +4,37 @@
 #include "manipulations/create.h"
 #include "manipulations/write.h"
 
+void  print_write_status (int escrita, char file[], char user[]);
+void print_file_status (int i, char message[]);
+
 void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
-  printf ("REQUISICOES\n");
+  printf ("REQUISICOES\n\n");
+
+  
   int posarquivo = create (d , fi , disk_usage , "default" , "teste.txt");
-  printf ("Arquivo criado %d \n", posarquivo);
+  print_file_status (posarquivo , "teste.txt");
+  printf ("\n");
   posarquivo = create (d , fi , disk_usage , "default2" , "teste.txt");
-  printf ("Arquivo criado %d \n", posarquivo);
+  print_file_status (posarquivo , "teste.txt");
+  printf ("\n");
+  posarquivo = create (d , fi , disk_usage , "default2" , "teste1.txt");
+  print_file_status (posarquivo , "teste1.txt");
+  printf ("\n");
+  
+  
   char message[] = "aasdasdasdadasdasdasasdasdasdsadasdasdasdasaskgfakjsgfaskjgfaskjgfaskgaskjdfgaskjdgfaskjgfaskjdgfaskjdgdjgdjfgadjf";
-  write (d , fi , disk_usage, "default" ,"teste.txt" , message , strlen(message));
+  int escrita = write (d , fi , disk_usage, "default" ,"teste.txt" , message , strlen(message));
+  print_write_status (escrita , "teste.txt" , "default");
+  printf ("\n");
+
+  escrita = write (d , fi , disk_usage, "default1" ,"teste.txt" , message , strlen(message));
+  print_write_status (escrita, "teste.txt" , "default1");
+  printf ("\n");
+   
+  escrita = write (d , fi , disk_usage, "default1" ,"teste2.txt" , message , strlen(message));
+  print_write_status (escrita, "teste2.txt" , "default1");
+  printf ("\n");
+  
   //int filePointer = -1;               //negativo para demonstrar ponteiro inválido
   //open (d , fi , "teste.txt" , &filePointer);
   //char block[1000];
@@ -20,4 +43,31 @@ void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
   //delete (d , fi , "teste.txt");
 
 }
+void  print_write_status (int escrita, char file[], char user[]){
+  switch(escrita){
+    case -1:
+      printf ("Erro: usuario invalido %s tentando escrever em %s\n" , user , file);
+      break;
+    case -2:
+      printf ("Erro: arquivo nao encontrado %s\n", file);
+      break;
+    default:
+      printf ("Escreveu no arquivo %s\n", file);
+      break;
+  }
+}
 
+void print_file_status (int i, char message[]){
+  switch (i){
+    case -1:
+      printf ("Erro: o arquivo já existe %s\n", message);
+      break;
+    case -2:
+      printf ("Erro: disco cheio %s\n", message);
+      break;
+    default:
+      printf ("Arquivo criado %s \n", message);
+      break;
+  }
+}
+    

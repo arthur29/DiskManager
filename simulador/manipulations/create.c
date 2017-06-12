@@ -2,6 +2,8 @@
 #include "../estruturas.h"
 #include "create.h"
 
+//-1 o arquivo já existe
+//-2 o disco está cheio
 int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char name[]){
   printf ("CREATE\n");
   
@@ -10,8 +12,11 @@ int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char nam
   if (current != NULL){
     while (current->next != NULL){
       if (strcmp(current->file_name , name) == 0){
-        return -1;
+        break;
       }
+    }
+    if (strcmp(current->file_name , name) == 0){
+      return -1;
     }
   }
   for (i=0;i<DISK_SIZE;i++){
@@ -49,7 +54,7 @@ int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char nam
     }
   }
   if (i == DISK_SIZE){
-    return -1;
+    return -2;
   }
   return i;
 

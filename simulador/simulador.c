@@ -4,7 +4,7 @@
 
 void simulador (){
 
-  printf ("SIMULADOR\n");
+  printf ("SIMULADOR\n\n");
   Disk disk[DISK_SIZE];
   int disk_usage[DISK_SIZE];
   int i;
