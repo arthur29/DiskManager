@@ -22,6 +22,11 @@ typedef struct FileHeaders {
 
 } FileHeader;
 
+typedef struct FileData {
+	int size;
+	char data[];
+} FileData;
+
 typedef struct FileIndex {
 
   char file_name[100];
