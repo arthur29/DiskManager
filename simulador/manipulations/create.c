@@ -2,7 +2,7 @@
 #include "../estruturas.h"
 #include "create.h"
 
-int create (Disk *d , FileIndex **fi , char name[]){
+int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char name[]){
   printf ("CREATE\n");
   
   int i;
@@ -15,10 +15,10 @@ int create (Disk *d , FileIndex **fi , char name[]){
     }
   }
   for (i=0;i<DISK_SIZE;i++){
-    if (d[i].in_use != 0){
+    if (disk_usage[i] != 0){
       FileHeader fh;
       fh.size = sizeof(fh);
-      strcpy(fh.owner,"default");
+      strcpy(fh.owner,owner);
       strcpy(fh.creation,"xx-xx-xxxx");
       strcpy(fh.modification,"xx-xx-xxxx");
       
@@ -27,6 +27,7 @@ int create (Disk *d , FileIndex **fi , char name[]){
       memcpy(d[i].block, bytePtr, sizeof(fh));
       
       d[i].in_use = 0;
+      disk_usage[i] = 0;
       d[i].previous_block_location = -1;
       d[i].next_block_location = -1;
       strcpy (d[i].block,fileHeaderByte);
@@ -46,6 +47,9 @@ int create (Disk *d , FileIndex **fi , char name[]){
       }
       break; 
     }
+  }
+  if (i == DISK_SIZE){
+    return -1;
   }
   return i;
 

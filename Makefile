@@ -2,6 +2,14 @@ CC=gcc
 
 all: trabalho
 
+makerun: clean trabalho
+	./DiskManager
+
+commit:
+	git add .
+	git commit -m $(m)
+	git push origin master
+
 trabalho: simulador.o main.o simulador.o requisicoes.o create.o write.o
 	$(CC) -std=gnu99 -o DiskManager create.o write.o requisicoes.o simulador.o main.o 
 main.o: main.c
