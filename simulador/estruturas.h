@@ -3,6 +3,7 @@
 
 //previous_block_location and next_block_location < 0 quando não tem
 
+
 typedef struct Disks {
 
   int in_use;                       //0 para usando != 0 para não em uso
