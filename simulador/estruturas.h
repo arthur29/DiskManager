@@ -37,6 +37,7 @@ typedef struct FileData {
 typedef struct FileIndex {
 
   char file_name[100];
+  char owner[100];
   int location;
   struct FileIndex *next;
 

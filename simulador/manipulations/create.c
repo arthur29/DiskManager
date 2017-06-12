@@ -14,8 +14,9 @@ int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char nam
       if (strcmp(current->file_name , name) == 0){
         break;
       }
+      current = current->next;
     }
-    if (strcmp(current->file_name , name) == 0){
+    if (strcmp(current->file_name , name) == 0 && strcmp (current->owner, owner) == 0){
       return -1;
     }
   }
@@ -40,12 +41,14 @@ int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char nam
       FileIndex *nfi = malloc (sizeof(FileIndex));
       strcpy(nfi->file_name, name);
       nfi->location = i;
+      strcpy(nfi->owner,owner);
       nfi->next = NULL;
       current = *fi;
       if (current != NULL){
         while (current->next != NULL){
           current = current->next;
         }
+
         current->next = nfi;
       }else{
         *fi = nfi;
