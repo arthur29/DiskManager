@@ -11,6 +11,6 @@ void simulador (){
     disk[i].in_use = 1;
   }
   FileIndex *fi = NULL;
-  requisicoes ( disk , fi );
+  requisicoes ( disk , &fi );
 
 }

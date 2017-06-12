@@ -1,4 +1,4 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void requisicoes (Disk *d , FileIndex *fi);
+void requisicoes (Disk *d , FileIndex **fi);

@@ -2,13 +2,14 @@
 #include "../estruturas.h"
 #include "create.h"
 
-int create (Disk *d , FileIndex *fi , char name[]){
+int create (Disk *d , FileIndex **fi , char name[]){
   printf ("CREATE\n");
   
   int i;
-  if (fi != NULL){
-    while (fi->next != NULL){
-      if (strcmp(fi->file_name , name) == 0){
+  FileIndex *current = (*fi);
+  if (current != NULL){
+    while (current->next != NULL){
+      if (strcmp(current->file_name , name) == 0){
         return -1;
       }
     }
@@ -23,7 +24,7 @@ int create (Disk *d , FileIndex *fi , char name[]){
       
       char *bytePtr = (char*)&fh;
       char fileHeaderByte[sizeof(fh)];
-      strcpy(fileHeaderByte, bytePtr);
+      memcpy(d[i].block, bytePtr, sizeof(fh));
       
       d[i].in_use = 0;
       d[i].previous_block_location = -1;
@@ -34,14 +35,14 @@ int create (Disk *d , FileIndex *fi , char name[]){
       strcpy(nfi->file_name, name);
       nfi->location = i;
       nfi->next = NULL;
-      FileIndex *current = fi;
+      current = *fi;
       if (current != NULL){
         while (current->next != NULL){
           current = current->next;
         }
         current->next = nfi;
       }else{
-        fi = nfi;
+        *fi = nfi;
       }
       break; 
     }
