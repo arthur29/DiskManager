@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 //previous_block_location and next_block_location < 0 quando não tem
 
 typedef struct Disks {
