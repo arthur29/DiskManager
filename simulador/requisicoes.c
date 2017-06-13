@@ -9,7 +9,7 @@
 
 void print_write_status (int status, char file[], char user[]);
 void print_create_status (int i, char user[], char status[]);
-void print_open_status (int status, char file[], char user[]);
+void print_open_status (int status, char file[], char user[] , char* filePointer);
 
 void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
   printf ("REQUISICOES\n\n");
@@ -29,18 +29,15 @@ void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
   posarquivo = create (d , fi , disk_usage , "default2" , "teste1.txt");
   print_create_status (posarquivo , "teste1.txt" , "default2" );
   printf ("\n");
-  
-
-
 
   char* filePointer = NULL;                       //negativo para demonstrar ponteiro inválido
 
-  int status_open = open (d , fi , "default1" , "teste.txt" , filePointer);
-  print_open_status (status_open, "teste.txt", "default1");
+  int status_open = open (d , fi , "default1" , "teste.txt" , &filePointer);
+  print_open_status (status_open, "teste.txt", "default1" , filePointer);
   printf ("\n");
 
-  status_open = open (d , fi , "default" , "teste.txt" , filePointer);
-  print_open_status (status_open, "teste.txt", "default1");
+  status_open = open (d , fi , "default" , "teste.txt" , &filePointer);
+  print_open_status (status_open, "teste.txt", "default1" , filePointer);
   printf ("\n");
 
   char message[] = "aasdasdasdadasdasdasasdasdasdsadasdasdasdasaskgfakjsgfaskjgfaskjgfaskgaskjdfgaskjdgfaskjgfaskjdgfaskjdgdjgdjfgadjf";
@@ -56,8 +53,8 @@ void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
   print_write_status (status, "teste2.txt" , "default1");
   printf ("\n");
 
-  status_open = open (d , fi , "default" , "teste.txt" , filePointer);
-  print_open_status (status_open, "teste.txt", "default1");
+  status_open = open (d , fi , "default" , "teste.txt" , &filePointer);
+  print_open_status (status_open, "teste.txt", "default1" , filePointer);
   printf ("\n");
 
   
