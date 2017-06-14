@@ -12,8 +12,7 @@
 
 typedef struct Disks {
 
-  int in_use;                       //0 para usando != 0 para não em uso
-  int previous_block_location;      //para voltar
+  int in_use;                       //0 para livre != 0 para em uso
   int next_block_location;          //para avancar no "disco"
   char block[BLOCK_SIZE];                 //bloco de dados
 
@@ -28,11 +27,6 @@ typedef struct FileHeaders {
   char modification[11];             //Data de modificacao
 
 } FileHeader;
-
-typedef struct FileData {
-	int size;
-	char data[];
-} FileData;
 
 typedef struct FileIndex {
 

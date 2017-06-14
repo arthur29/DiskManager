@@ -11,6 +11,13 @@ void strcut (char *data,int free_space, int data_size);
 int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , char name[] , char data[], int data_size){
   printf ("WRITE\n");
   FileIndex *current = *fi;
+  
+  char data_backup[data_size];
+
+  
+  memcpy(data_backup, data, data_size);
+  
+
   int i;
   if (current != NULL){
     while (current != NULL){
@@ -20,6 +27,12 @@ int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , ch
       current = current->next;
     }
     if (current != NULL){
+      int position = d[current->location].next_block_location;
+      while (position != -1){
+        disk_usage[position] = 0;
+        d[position].in_use = 0;
+        position = d[position].next_block_location;
+      }
       char *bytePtr = d[current->location].block;
       FileHeader fh;
       memcpy(&fh , bytePtr , sizeof(fh));
@@ -39,7 +52,7 @@ int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , ch
       int count_blocks = 1;
       if (count_blocks != qtd_blocks){
        for (i=0;i<DISK_SIZE;i++){
-         if (disk_usage[i] != 0){
+         if (disk_usage[i] == 0){
            count_blocks ++;
            if (count_blocks == qtd_blocks){
              break;
@@ -60,37 +73,47 @@ int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , ch
           }
         }
 
-        printf ("Escreveu no bloco %d\n",current->location);
+        printf ("Escrita no bloco %d\n", current->location);
         int j;
+        int location = current->location;
+        int data_size_manipulation = data_size;
         for (j=1;j<qtd_blocks;j++){
           for (i=0;i<DISK_SIZE;i++){
-            if (disk_usage[i] != 0){
+            if (disk_usage[i] == 0){
               break;
             }
           }
-
-          d[current->location].next_block_location = i;
-          d[i].in_use = 0;
-          disk_usage[i] = 0;
+          
+          d[location].next_block_location = i;
+          
+          if (j == qtd_blocks-1){
+            d[i].next_block_location = -1;
+          }
+          
+          d[i].in_use = 1;
+          disk_usage[i] = 1;
           memcpy(d[i].block,data,block);
-          char teste[BLOCK_SIZE];
-          memcpy(teste,d[i].block,block);
-          if (block < data_size){
+          if (block < data_size_manipulation){
             strcut(data,block,data_size);
+            data_size_manipulation = data_size_manipulation - block;
           }else{
             strcpy(data,"");
-          } 
-          data_size = data_size - block;
-          printf ("Escreveu no bloco %d\n",i);
+            data_size_manipulation = 0;
+          }
+          location = i;
+          printf ("Escrita no bloco %d\n", i);
         }
       }
-
+      memcpy(data, data_backup,data_size);
+      return i;
     }else{
+      strcpy(data, data_backup);
       return -2;
     }
   }
   
-  return 0;
+  strcpy(data,data_backup);
+  return -1;
 
 }
 void strcut (char *data,int free_space, int data_size){

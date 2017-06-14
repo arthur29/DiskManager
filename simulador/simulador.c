@@ -9,8 +9,8 @@ void simulador (){
   int disk_usage[DISK_SIZE];
   int i;
   for (i=0;i<DISK_SIZE;i++){
-    disk[i].in_use = 1;
-    disk_usage[i] = 1;
+    disk[i].in_use = 0;
+    disk_usage[i] = 0;
   }
   FileIndex *fi = NULL;
   requisicoes ( disk , &fi , disk_usage );

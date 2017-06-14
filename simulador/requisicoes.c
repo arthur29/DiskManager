@@ -3,13 +3,12 @@
 #include "requisicoes.h"
 #include "manipulations/create.h"
 #include "manipulations/write.h"
-#include "manipulations/open.h"
+#include "manipulations/read.h"
+#include "manipulations/delete.h"
 
-//#include "manipulations/read.h"
-
-void print_write_status (int status, char file[], char user[]);
-void print_create_status (int i, char user[], char status[]);
-void print_open_status (int status, char file[], char user[] , char* filePointer);
+void print_write_status (int status, char message[] , char file[]);
+void print_create_status (int i, char user[]);
+void print_delete_status (int status, char file[]);
 
 void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
   printf ("REQUISICOES\n\n");
@@ -19,88 +18,74 @@ void requisicoes (Disk *d , FileIndex **fi , int *disk_usage){
 
   
   int posarquivo = create (d , fi , disk_usage , "default" , "teste.txt");
-  print_create_status (posarquivo , "teste.txt" , "default" );
+  print_create_status (posarquivo , "teste.txt" );
   printf ("\n");
   
-  posarquivo = create (d , fi , disk_usage , "default2" , "teste.txt");
-  print_create_status (posarquivo , "teste.txt" , "default2" );
+  posarquivo = create (d , fi , disk_usage , "default" , "teste.txt");
+  print_create_status (posarquivo , "teste.txt" );
   printf ("\n");
   
-  posarquivo = create (d , fi , disk_usage , "default2" , "teste1.txt");
-  print_create_status (posarquivo , "teste1.txt" , "default2" );
+  posarquivo = create (d , fi , disk_usage , "default" , "teste1.txt");
+  print_create_status (posarquivo , "teste1.txt" );
   printf ("\n");
 
   char* filePointer = NULL;                       //negativo para demonstrar ponteiro inválido
 
-  int status_open = open (d , fi , "default1" , "teste.txt" , &filePointer);
-  print_open_status (status_open, "teste.txt", "default1" , filePointer);
-  printf ("\n");
-
-  status_open = open (d , fi , "default" , "teste.txt" , &filePointer);
-  print_open_status (status_open, "teste.txt", "default1" , filePointer);
-  printf ("\n");
-
-  char message[] = "aasdasdasdadasdasdasasdasdasdsadasdasdasdasaskgfakjsgfaskjgfaskjgfaskgaskjdfgaskjdgfaskjgfaskjdgfaskjdgdjgdjfgadjf";
+  char message[] = "lasklasjdfhkljasdfhlaksdjfhaklsdfhklasdfhklasdhfklasdfhlaksdfhaklsdjfhalksdjfhklasdhfkaasdasdasdadasdasdasasdasdasdsadasdasdasdasaskgfakjsgfaskjgfaskjgfaskgaskjdfgaskjdgfaskjgfaskjdgfaskjdgdjgdjfgadjf";
   int status = write (d , fi , disk_usage, "default" ,"teste.txt" , message, strlen(message));
-  print_write_status (status , "teste.txt" , "default");
+  print_write_status (status, message , "teste.txt" );
   printf ("\n");
 
-  status = write (d , fi , disk_usage, "default1" ,"teste.txt" , message , strlen(message));
-  print_write_status (status, "teste.txt" , "default1");
+  char *mensagem;
+  status = read (d , fi , "default" , "teste.txt" , &mensagem);
+  printf ("Arquivo: %s\nMensagem: %s\n\n", "teste.txt", mensagem);
+
+  status = write (d , fi , disk_usage, "default" ,"teste1.txt" , message , strlen(message));
+  print_write_status (status, message , "teste1.txt" );
   printf ("\n");
    
-  status = write (d , fi , disk_usage, "default1" ,"teste2.txt" , message , strlen(message));
-  print_write_status (status, "teste2.txt" , "default1");
+  status = write (d , fi , disk_usage, "default" ,"teste2.txt" , message , strlen(message));
+  print_write_status (status, message , "teste2.txt" );
   printf ("\n");
 
-  status_open = open (d , fi , "default" , "teste.txt" , &filePointer);
-  print_open_status (status_open, "teste.txt", "default1" , filePointer);
-  printf ("\n");
-
-  
-  //char block[BLOCK_SIZE];
-  //read (d , fi ,  "default" , file , block, BLOCK_SIZE);
-  //printf ("%s\n" , block);
-  //close (d , fi, "teste.txt");
-  //delete (d , fi , "teste.txt");  
+  status = delete (d , fi , disk_usage , "teste.txt");
+  print_delete_status (status, "teste.txt");
 
 }
-void  print_open_status (int status, char file[], char user[] , char *filePointer){
-  switch(status){
-    case -1:
-      printf ("Erro: %s tentando abrir %s nao encontrado\n" , user , file);
-      break;
-    default:
-      printf ("Abriu o arquivo %s %li\n", file, filePointer);
-      break;
-  }
-}
 
-void  print_write_status (int status, char file[], char user[]){
+void  print_delete_status (int status, char file[]){
   switch(status){
-    case -1:
-      printf ("Erro: usuario invalido %s tentando escrever em %s\n" , user , file);
-      break;
     case -2:
       printf ("Erro: arquivo nao encontrado %s\n", file);
       break;
     default:
-      printf ("Escreveu no arquivo %s\n", file);
+      printf ("Arquivo %s deletado\n", file);
       break;
   }
 }
 
-void print_create_status (int status, char file[] , char user[]){
+void  print_write_status (int status, char message[] , char file[]){
+  switch(status){
+    case -2:
+      printf ("Erro: arquivo nao encontrado %s\n", file);
+      break;
+    default:
+      printf ("Arquivo %s escrito\n", file);
+      printf ("Message: %s\n" , message);
+      break;
+  }
+}
+
+void print_create_status (int status, char file[]){
   switch (status){
     case -1:
-      printf ("Erro: o arquivo %s do usuario %s já existe\n", user, file);
+      printf ("Erro: o arquivo %s ja existe\n", file);
       break;
     case -2:
       printf ("Erro: disco cheio\n");
       break;
     default:
-      printf ("Arquivo %s criado pelo usuario %s \n", file, user);
+      printf ("Arquivo %s criado\n", file);
       break;
   }
-}
-    
+} 

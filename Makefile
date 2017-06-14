@@ -10,8 +10,8 @@ commit:
 	git commit -m $(m)
 	git push origin master
 
-trabalho: simulador.o main.o simulador.o requisicoes.o create.o write.o open.o
-	$(CC) -std=gnu99 -o DiskManager open.o create.o write.o requisicoes.o simulador.o main.o 
+trabalho: simulador.o main.o simulador.o requisicoes.o create.o write.o read.o delete.o
+	$(CC) -std=gnu99 -o DiskManager delete.o read.o create.o write.o requisicoes.o simulador.o main.o 
 main.o: main.c
 	$(CC) -std=gnu99 -c main.c
 simulador.o: simulador/simulador.c simulador/simulador.h
@@ -22,8 +22,10 @@ create.o: simulador/manipulations/create.c simulador/manipulations/create.h
 	$(CC) -std=gnu99 -c simulador/manipulations/create.c
 write.o: simulador/manipulations/write.c simulador/manipulations/write.h
 	$(CC) -std=gnu99 -c simulador/manipulations/write.c
-open.o: simulador/manipulations/open.c simulador/manipulations/open.h
-	$(CC) -std=gnu99 -c simulador/manipulations/open.c
+read.o: simulador/manipulations/read.c simulador/manipulations/read.h
+	$(CC) -std=gnu99 -c simulador/manipulations/read.c
+delete.o: simulador/manipulations/delete.c simulador/manipulations/delete.h
+	$(CC) -std=gnu99 -c simulador/manipulations/delete.c
 
 .PHONY: clean
 

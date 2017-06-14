@@ -21,7 +21,7 @@ int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char nam
     }
   }
   for (i=0;i<DISK_SIZE;i++){
-    if (disk_usage[i] != 0){
+    if (disk_usage[i] == 0){
       FileHeader fh;
       fh.size = sizeof(fh);
       strcpy(fh.owner,owner);
@@ -32,9 +32,8 @@ int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char nam
       char fileHeaderByte[sizeof(fh)];
       memcpy(d[i].block, bytePtr, sizeof(fh));
       
-      d[i].in_use = 0;
-      disk_usage[i] = 0;
-      d[i].previous_block_location = -1;
+      d[i].in_use = 1;
+      disk_usage[i] = 1;
       d[i].next_block_location = -1;
       strcpy (d[i].block,fileHeaderByte);
 
