@@ -3,7 +3,7 @@
 
 
 //previous_block_location and next_block_location < 0 quando não tem
-#define DISK_SIZE 100
+#define DISK_SIZE 25
 
 
 //para não gerar erros no algorítmo o menor tamanho que o BLOCK_SIZE pode ter é a qtd de bytes do FileHeader

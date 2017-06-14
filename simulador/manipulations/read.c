@@ -7,6 +7,7 @@
 
 
 int read (Disk *d , FileIndex **fi , char current_user[] , char name[] , char **block){
+  system ("clear");
  printf ("READ\n");
   
   FileIndex *current = *fi;
@@ -42,7 +43,7 @@ int read (Disk *d , FileIndex **fi , char current_user[] , char name[] , char **
             size -=block_size;
           }else{
             if (size>0){
-              memcpy(data+data_index,d[position].block,size-1);
+              memcpy(data+data_index,d[position].block,size);
               data_index+=size;
               data[data_index] = '\0';
               data_index++;

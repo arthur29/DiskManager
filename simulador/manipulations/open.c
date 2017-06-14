@@ -6,6 +6,7 @@
 //type == 1 é pra leitura
 
 int open (Disk *d , FileIndex **fi , char user[] , char name[] , int type , char **pointer){
+  system ("clear");
   printf ("OPEN\n");
 
   FileIndex *current = *fi;

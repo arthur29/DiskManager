@@ -5,6 +5,7 @@
 //-1 file not found
 
 int delete (Disk *d , FileIndex **fi , int *disk_usage , char file[]){
+  system ("clear");
   printf ("DELETE\n");
   FileIndex *current = *fi;
 

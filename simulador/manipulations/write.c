@@ -8,7 +8,9 @@ void strcut (char *data,int free_space, int data_size);
 
 //-1 usuário inválido
 //-2 arquivo nao encontrado
+//-3 disco cheio
 int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , char name[] , char data[], int data_size){
+  system ("clear");
   printf ("WRITE\n");
   FileIndex *current = *fi;
   
@@ -60,8 +62,8 @@ int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , ch
          }
        }
       }
-      memcpy(d[current->location].block,&fh,sizeof(fh));
       if (count_blocks == qtd_blocks){
+        memcpy(d[current->location].block,&fh,sizeof(fh));
         if (free_space < data_size && free_space != 0){
           memcpy(d[current->location].block+sizeof(fh),data,free_space);
           strcut (data, free_space, data_size);
@@ -103,6 +105,8 @@ int write (Disk *d , FileIndex **fi , int *disk_usage , char current_user[] , ch
           location = i;
           printf ("Escrita no bloco %d\n", i);
         }
+      }else{
+        return -3;
       }
       memcpy(data, data_backup,data_size);
       return i;

@@ -5,6 +5,7 @@
 //-1 o arquivo já existe
 //-2 o disco está cheio
 int create (Disk *d , FileIndex **fi , int *disk_usage , char owner[] , char name[]){
+  system ("clear");
   printf ("CREATE\n");
   
   int i;
